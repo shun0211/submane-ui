@@ -204,18 +204,19 @@
 //   )
 // }
 
-import { TextInput, Checkbox, Button, Group, Box } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { TextInput, Checkbox, Button, Group, Box } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import React from "react";
 
 export default function Demo() {
   const form = useForm({
     initialValues: {
-      email: '',
+      email: "",
       termsOfService: false,
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
 
@@ -226,13 +227,13 @@ export default function Demo() {
           required
           label="Email"
           placeholder="your@email.com"
-          {...form.getInputProps('email')}
+          {...form.getInputProps("email")}
         />
 
         <Checkbox
           mt="md"
           label="I agree to sell my privacy"
-          {...form.getInputProps('termsOfService', { type: 'checkbox' })}
+          {...form.getInputProps("termsOfService", { type: "checkbox" })}
         />
 
         <Group position="right" mt="md">
