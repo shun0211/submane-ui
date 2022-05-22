@@ -10,8 +10,13 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import React from "react";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import axios from "axios";
+import "../utils/firebase";
+import { useRouter } from "next/router";
 
 function Signup() {
+  const router = useRouter();
   const form = useForm({
     initialValues: {
       email: "",
@@ -19,11 +24,33 @@ function Signup() {
       passwordConfirmation: "",
       termsOfService: false,
     },
-
-    // validate: {
-    //   email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-    // },
   });
+
+  const handleEmailAndPasswordSignup = async (
+    email: string,
+    password: string
+  ) => {
+    const auth = getAuth();
+    const userCredentail = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const currentUser = userCredentail.user;
+    const token = await currentUser.getIdToken(true);
+    const res = await axios
+      .post(
+        "http://localhost:1323/users",
+        { email: email, uid: currentUser.uid },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .catch((error) => console.log(error));
+      router.push('/')
+  };
 
   return (
     <div className="min-h-screen bg-sky-200">
@@ -33,7 +60,11 @@ function Signup() {
           会員登録
         </Title>
         <Box sx={{ maxWidth: 300 }} mx="auto">
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <form
+            onSubmit={form.onSubmit((values) => {
+              handleEmailAndPasswordSignup(values.email, values.password);
+            })}
+          >
             <TextInput
               required
               label="メールアドレス"
