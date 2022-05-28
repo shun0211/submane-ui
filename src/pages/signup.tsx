@@ -26,6 +26,7 @@ function Signup() {
     },
   });
 
+  // HUCK: ComponentProps<"form">["onSubmit"]がいいみたい
   const handleEmailAndPasswordSignup = async (
     email: string,
     password: string

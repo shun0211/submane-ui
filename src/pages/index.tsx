@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
-import Sidebar from "../components/Sidebar";
-import styles from "../styles/Home.module.css";
 import React from "react";
+import LandingPage from "../components/LandingPage";
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.Home}>
-      <Sidebar />
+    <div>
+      <LandingPage />
     </div>
   );
 };

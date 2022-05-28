@@ -3,7 +3,7 @@ import Content from "../components/Content";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/Home.module.css";
 
-function Home() {
+export default function Dashboard() {
   return (
     <div className={styles.Home}>
       <Sidebar />
@@ -11,5 +11,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;
