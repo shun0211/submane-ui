@@ -8,7 +8,7 @@ import SidebarIcon from "./SidebarIcon";
 
 const Sidebar = () => {
   const router = useRouter();
-  
+
   return (
     <div className={styles.Sidebar}>
       <SidebarIcon />
