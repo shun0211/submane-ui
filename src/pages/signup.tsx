@@ -15,7 +15,7 @@ import axios from "axios";
 import "../utils/firebase";
 import { useRouter } from "next/router";
 
-function Signup() {
+const Signup = () => {
   const router = useRouter();
   const form = useForm({
     initialValues: {
