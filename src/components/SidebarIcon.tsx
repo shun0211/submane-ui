@@ -1,8 +1,11 @@
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
 import styles from "../styles/Sidebar.module.css";
+import { AuthContext } from "../utils/auth/authProvider";
 
-function SidebarIcon() {
+const SidebarIcon = () => {
+  const auth = useContext(AuthContext)
+
   return (
     <div className={styles.SidebarIcon}>
       <Image
@@ -12,7 +15,7 @@ function SidebarIcon() {
         height={100}
         className={styles.SidebarIcon}
       />
-      <p className={styles.email}>test@example.com</p>
+      <p className={styles.email}>{auth.currentUser?.email}</p>
     </div>
   );
 }

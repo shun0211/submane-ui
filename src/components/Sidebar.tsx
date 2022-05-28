@@ -6,9 +6,9 @@ import styles from "../styles/Sidebar.module.css";
 import { useRouter } from "next/router";
 import SidebarIcon from "./SidebarIcon";
 
-function Sidebar() {
+const Sidebar = () => {
   const router = useRouter();
-
+  
   return (
     <div className={styles.Sidebar}>
       <SidebarIcon />
@@ -34,6 +34,6 @@ function Sidebar() {
       </ul>
     </div>
   );
-}
+};
 
 export default Sidebar;
