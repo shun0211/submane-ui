@@ -25,7 +25,7 @@ const Header = () => {
     const res = await axios
       .delete("http://localhost:1323/logout")
       .catch((error) => console.log(error));
-    router.push("/");
+    router.push("/signin");
   };
 
   return (
