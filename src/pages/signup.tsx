@@ -9,14 +9,17 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import React from "react";
+import React, { useContext } from "react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import axios from "axios";
 import "../utils/firebase";
 import { useRouter } from "next/router";
+import { AuthContext } from "../utils/auth/authProvider";
+import { User } from "../types";
 
 const Signup = () => {
   const router = useRouter();
+  const { setCurrentUser } = useContext(AuthContext);
   const form = useForm({
     initialValues: {
       email: "",
@@ -37,12 +40,12 @@ const Signup = () => {
       email,
       password
     );
-    const currentUser = userCredentail.user;
-    const token = await currentUser.getIdToken(true);
-    const res = await axios
+    const user = userCredentail.user;
+    const token = await user.getIdToken(true);
+    const res: any = await axios
       .post(
         "http://localhost:1323/users",
-        { email: email, uid: currentUser.uid },
+        { email: email, uid: user.uid },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -50,7 +53,14 @@ const Signup = () => {
         }
       )
       .catch((error) => console.log(error));
-      router.push('/')
+
+    const currentUser: User = {
+      id: res.data.ID,
+      email: res.data.Email,
+      name: res.data.Name,
+    };
+    setCurrentUser(() => currentUser);
+    router.push("/dashboard");
   };
 
   return (
@@ -103,6 +113,6 @@ const Signup = () => {
       </Container>
     </div>
   );
-}
+};
 
 export default Signup;

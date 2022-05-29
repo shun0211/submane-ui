@@ -1,19 +1,20 @@
 import { Loader } from "@mantine/core";
 import { getAuth } from "firebase/auth";
 import React, { createContext, useEffect, useState } from "react";
+import { User } from "../../types";
 import "./../firebase";
-
-type User = {
-  email: string | null;
-};
 
 type AuthContextProps = {
   currentUser: User | null | undefined;
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null | undefined>>;
   signedIn: boolean;
 };
 
 export const AuthContext = createContext<AuthContextProps>({
   currentUser: undefined,
+  setCurrentUser: () => {
+    throw Error("No default value!");
+  },
   signedIn: false,
 });
 
@@ -21,23 +22,23 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(
     undefined
   );
-  const [signedIn, setSignedIn] = useState(false);
+  const [signedIn, checkSignedIn] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
     auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setCurrentUser({ email: user.email });
-        setSignedIn(true);
+        setCurrentUser({ id: null, name: null, email: user.email });
+        checkSignedIn(true);
       } else {
-        setSignedIn(true);
+        checkSignedIn(true);
       }
     });
   });
 
   if (signedIn) {
     return (
-      <AuthContext.Provider value={{ currentUser, signedIn }}>
+      <AuthContext.Provider value={{ currentUser, setCurrentUser, signedIn }}>
         {children}
       </AuthContext.Provider>
     );
