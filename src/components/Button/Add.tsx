@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -9,9 +9,12 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { TimeInput } from "@mantine/dates";
+import { AuthContext } from "../../utils/auth/authProvider";
+import axios from "axios";
 
 const Add = () => {
   const [opened, setOpened] = useState(false);
+  const { currentUser } = useContext(AuthContext);
 
   const form = useForm({
     initialValues: {
@@ -21,6 +24,22 @@ const Add = () => {
     },
   });
 
+  const addSubscription = async (
+    name: string,
+    price: number,
+    contractAt: string | null
+  ) => {
+    console.log(currentUser?.id);
+    const res: any = await axios
+      .post("http://localhost:1323/subscriptions", {
+        name: name,
+        price: price,
+        userId: 45,
+      })
+      .catch((error) => console.log(error));
+    console.log(res);
+  };
+
   return (
     <div>
       <Modal
@@ -28,10 +47,19 @@ const Add = () => {
         onClose={() => setOpened(false)}
         title="サブスクリプションを登録する"
         size="lg"
-        classNames={{header: "justify-center relative", title: 'text-xl', close: 'absolute right-3',}}
+        classNames={{
+          header: "justify-center relative",
+          title: "text-xl",
+          close: "absolute right-3",
+        }}
       >
         <Box sx={{ maxWidth: 400 }} mx="auto">
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <form
+            onSubmit={form.onSubmit((values) => {
+              console.log(values);
+              addSubscription(values.name, values.price, values.contractAt);
+            })}
+          >
             <TextInput
               required
               data-autofocus
