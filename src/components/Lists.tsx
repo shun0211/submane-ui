@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  ScrollArea,
-} from "@mantine/core";
+import { Table } from "@mantine/core";
 import axios from "axios";
+import { Trash } from "tabler-icons-react";
 
 type RowData = {
+  id: number;
   name: string;
   price: string;
   contractAt: string;
@@ -13,6 +12,16 @@ type RowData = {
 
 export default function Lists() {
   const [data, setData] = useState<RowData[]>([]);
+  const handleRemoveSubscription = async (id: number) => {
+    const res: any = await axios
+      .delete(`http://localhost:1323/subscriptions/${id}`)
+      .then(() => {
+        const newData = [...data]
+        newData.splice(id, 1)
+        setData(newData)
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
     axios
@@ -27,11 +36,13 @@ export default function Lists() {
       <td>{row.name}</td>
       <td>{row.price}</td>
       <td>{row.contractAt}</td>
+      <td>
+        <Trash className="h-5 w-5" onClick={() => handleRemoveSubscription(row.id)} />
+      </td>
     </tr>
   ));
 
   return (
-    <ScrollArea>
       <Table
         horizontalSpacing="md"
         verticalSpacing="xs"
@@ -39,21 +50,13 @@ export default function Lists() {
       >
         <thead>
           <tr>
-            <th>
-              サブスク名
-            </th>
-            <th>
-              月額料金
-            </th>
-            <th>
-              契約日
-            </th>
+            <th>サブスク名</th>
+            <th>月額料金</th>
+            <th>契約日</th>
+            <th></th>
           </tr>
         </thead>
-        <tbody>
-          {rows}
-        </tbody>
+        <tbody>{rows}</tbody>
       </Table>
-    </ScrollArea>
   );
 }
