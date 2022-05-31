@@ -37,7 +37,7 @@ const Add = () => {
         userId: 45,
       })
       .catch((error) => console.log(error));
-    console.log(res);
+    console.log(res.json());
   };
 
   return (
