@@ -56,9 +56,10 @@ const Signup = () => {
 
     const currentUser: User = {
       id: res.data.ID,
-      email: res.data.Email,
-      name: res.data.Name,
+      email: res.data.email,
+      name: res.data.name,
     };
+
     setCurrentUser(() => currentUser);
     router.push("/dashboard");
   };

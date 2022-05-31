@@ -17,14 +17,17 @@
     "@headlessui/react": "^1.6.0",
     "@heroicons/react": "^1.0.6",
     "@mantine/core": "^4.2.1",
+    "@mantine/dates": "^4.2.7",
     "@mantine/form": "^4.2.1",
     "@mantine/hooks": "^4.2.1",
     "@mantine/next": "^4.2.1",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.2",
     "firebase": "^9.8.1",
     "next": "12.1.5",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "tabler-icons-react": "^1.48.0"
   },
   "devDependencies": {
     "@types/node": "17.0.29",
