@@ -12,7 +12,7 @@ import { TimeInput } from "@mantine/dates";
 import { AuthContext } from "../../utils/auth/authProvider";
 import axios from "axios";
 
-const Add = () => {
+const Add = ({ data, setData }) => {
   const [opened, setOpened] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
@@ -30,14 +30,21 @@ const Add = () => {
     contractAt: string | null
   ) => {
     console.log(currentUser?.id);
-    const res: any = await axios
+    await axios
       .post("http://localhost:1323/subscriptions", {
         name: name,
         price: price,
         userId: 45,
       })
+      .then((res) => {
+        const newData = [
+          ...data,
+          { id: res.data.id, name: name, price: price, contractAt: contractAt },
+        ];
+        setData(newData);
+        setOpened(false);
+      })
       .catch((error) => console.log(error));
-    console.log(res.json());
   };
 
   return (
