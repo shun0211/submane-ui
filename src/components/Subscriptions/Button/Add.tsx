@@ -22,6 +22,8 @@ const Add = ({ data, setData }: {
   const [opened, setOpened] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
+  console.log(currentUser)
+
   const form = useForm({
     initialValues: {
       name: "",

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Subscription } from "../../types";
 import { API_URL } from "../endpoint";
 
 export const getSubscriptions = () => {
