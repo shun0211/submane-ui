@@ -16,7 +16,7 @@ const Detail = ({
   subscription,
   opened,
   setOpened,
-  setChange,
+  setchanged,
 }: {
   subscription: Subscription;
   opened: boolean;
@@ -26,7 +26,7 @@ const Detail = ({
       subscription: Subscription | null;
     }>
   >;
-  setChange: React.Dispatch<React.SetStateAction<boolean>>;
+  setchanged: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const form = useForm({
     initialValues: {
@@ -42,7 +42,7 @@ const Detail = ({
     price: number,
     contractAt: string
   ) => {
-    const subscription = await putSubscriptionsSubscriptionId(
+    await putSubscriptionsSubscriptionId(
       id,
       name,
       price,
@@ -52,7 +52,7 @@ const Detail = ({
       open: false,
       subscription: null,
     });
-    setChange(true);
+    setchanged(true);
   };
 
   return (

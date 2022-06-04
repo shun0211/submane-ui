@@ -10,10 +10,14 @@ import {
 import { useForm } from "@mantine/form";
 import { TimeInput } from "@mantine/dates";
 import { AuthContext } from "../../../utils/auth/authProvider";
-import axios from "axios";
 import { postSubscriptions } from "../../../api/subscriptions";
+import { RowData } from "../../Content";
+import { Subscription } from "../../../types";
 
-const Add = ({ data, setData }) => {
+const Add = ({ data, setData }: {
+  data: RowData[],
+  setData: React.Dispatch<React.SetStateAction<RowData[]>>
+}) => {
   const [opened, setOpened] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
@@ -30,22 +34,13 @@ const Add = ({ data, setData }) => {
     price: number,
     contractAt: string | null
   ) => {
-    // const subscription = await postSubscriptions(name: )
-    axios
-      .post("http://localhost:1323/subscriptions", {
-        name: name,
-        price: price,
-        userId: 45,
-      })
-      .then((res) => {
-        const newData = [
-          ...data,
-          { id: res.data.id, name: name, price: price, contractAt: contractAt },
-        ];
-        setData(newData);
-        setOpened(false);
-      })
-      .catch((error) => console.log(error));
+    const subscription: Subscription = await postSubscriptions(name, price, contractAt, 45)
+    const newData = [
+      ...data,
+      { id: subscription.id, name: name, price: price, contractAt: contractAt }
+    ]
+    setData(newData)
+    setOpened(false)
   };
 
   return (

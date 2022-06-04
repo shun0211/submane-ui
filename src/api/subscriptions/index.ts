@@ -2,8 +2,8 @@ import axios from "axios";
 import { Subscription } from "../../types";
 import { API_URL } from "../endpoint";
 
-export const getSubscriptions = async () => {
-  return await axios
+export const getSubscriptions = () => {
+  return axios
     .get(`${API_URL}/subscriptions`)
     .then((res) => res.data)
     .catch((e) => console.error(e));
@@ -16,28 +16,30 @@ export const getSubscriptionsSubscriptionId = (id: number) => {
     .catch((e) => console.error(e));
 };
 
-export const postSubscriptions = async (
+export const postSubscriptions = (
   name: string,
   price: number,
-  contractAt: string
+  contractAt: string | null,
+  userId: number
 ) => {
-  return await axios
+  return axios
     .post(`${API_URL}/subscriptions`, {
       name: name,
       price: price,
       contractAt: contractAt,
+      userId: userId,
     })
     .then((res) => res.data)
     .catch((e) => console.error(e));
 };
 
-export const putSubscriptionsSubscriptionId = async (
+export const putSubscriptionsSubscriptionId = (
   id: number,
   name: string,
   price: number,
   contractAt: string
 ) => {
-  return await axios
+  return axios
     .put(`${API_URL}/subscriptions/${id}`, {
       name: name,
       price: price,
@@ -47,8 +49,8 @@ export const putSubscriptionsSubscriptionId = async (
     .catch((e) => console.error(e));
 };
 
-export const deleteSubscriptionsSubscriptionId = async (id: number) => {
-  return await axios
+export const deleteSubscriptionsSubscriptionId = (id: number) => {
+  return axios
     .delete(`${API_URL}/subscriptions/${id}`)
     .then((res) => res.data)
     .catch((e) => console.error(e));
