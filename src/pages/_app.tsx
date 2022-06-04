@@ -4,6 +4,8 @@ import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 import React from "react";
 import { AuthProvider } from "../utils/auth/authProvider";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -29,6 +31,7 @@ export default function App(props: AppProps) {
         >
           <Component {...pageProps} />
         </MantineProvider>
+        <ToastContainer />
       </AuthProvider>
     </>
   );

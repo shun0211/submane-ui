@@ -29,8 +29,6 @@ export const postSubscriptions = (
       contractAt: contractAt,
       userId: userId,
     })
-    .then((res) => res.data)
-    .catch((e) => console.error(e));
 };
 
 export const putSubscriptionsSubscriptionId = (

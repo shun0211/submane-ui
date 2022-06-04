@@ -13,6 +13,7 @@ import { AuthContext } from "../../../utils/auth/authProvider";
 import { postSubscriptions } from "../../../api/subscriptions";
 import { RowData } from "../../Content";
 import { Subscription } from "../../../types";
+import { toast } from "react-toastify";
 
 const Add = ({ data, setData }: {
   data: RowData[],
@@ -34,13 +35,18 @@ const Add = ({ data, setData }: {
     price: number,
     contractAt: string | null
   ) => {
-    const subscription: Subscription = await postSubscriptions(name, price, contractAt, 45)
-    const newData = [
-      ...data,
-      { id: subscription.id, name: name, price: price, contractAt: contractAt }
-    ]
-    setData(newData)
-    setOpened(false)
+    try {
+      const res = await postSubscriptions(name, price, contractAt, 45)
+      const subscription: Subscription = res.data
+      const newData = [
+        ...data,
+        { id: subscription.id, name: name, price: price, contractAt: contractAt }
+      ]
+      setData(newData)
+      setOpened(false)
+    } catch (error) {
+      toast.error("予期せぬエラーが発生しました。")
+    }
   };
 
   return (
@@ -59,7 +65,6 @@ const Add = ({ data, setData }: {
         <Box sx={{ maxWidth: 400 }} mx="auto">
           <form
             onSubmit={form.onSubmit((values) => {
-              console.log(values);
               addSubscription(values.name, values.price, values.contractAt);
             })}
           >
