@@ -1,4 +1,3 @@
-import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -7,52 +6,66 @@ import {
   NumberInput,
   TextInput,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import { TimeInput } from "@mantine/dates";
-import { AuthContext } from "../../utils/auth/authProvider";
-import axios from "axios";
+import { useForm } from "@mantine/form";
+import React from "react";
+import { putSubscriptionsSubscriptionId } from "../../../api/subscriptions";
+import { Subscription } from "../../../types";
 
-const Add = ({ data, setData }) => {
-  const [opened, setOpened] = useState(false);
-  const { currentUser } = useContext(AuthContext);
-
+const Detail = ({
+  subscription,
+  opened,
+  setOpened,
+  setChange,
+}: {
+  subscription: Subscription;
+  opened: boolean;
+  setOpened: React.Dispatch<
+    React.SetStateAction<{
+      open: boolean;
+      subscription: Subscription | null;
+    }>
+  >;
+  setChange: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const form = useForm({
     initialValues: {
-      name: "",
-      contractAt: "",
-      price: 0,
+      name: subscription.name,
+      price: subscription.price,
+      contractAt: subscription.contractAt,
     },
   });
 
-  const addSubscription = async (
+  const updateSubscription = async (
+    id: number,
     name: string,
     price: number,
-    contractAt: string | null
+    contractAt: string
   ) => {
-    console.log(currentUser?.id);
-    await axios
-      .post("http://localhost:1323/subscriptions", {
-        name: name,
-        price: price,
-        userId: 45,
-      })
-      .then((res) => {
-        const newData = [
-          ...data,
-          { id: res.data.id, name: name, price: price, contractAt: contractAt },
-        ];
-        setData(newData);
-        setOpened(false);
-      })
-      .catch((error) => console.log(error));
+    const subscription = await putSubscriptionsSubscriptionId(
+      id,
+      name,
+      price,
+      contractAt
+    );
+    setOpened({
+      open: false,
+      subscription: null,
+    });
+    setChange(true);
   };
 
   return (
     <div>
       <Modal
         opened={opened}
-        onClose={() => setOpened(false)}
-        title="サブスクリプションを登録する"
+        onClose={() =>
+          setOpened({
+            open: false,
+            subscription: null,
+          })
+        }
+        title={subscription.name}
         size="lg"
         classNames={{
           header: "justify-center relative",
@@ -64,7 +77,12 @@ const Add = ({ data, setData }) => {
           <form
             onSubmit={form.onSubmit((values) => {
               console.log(values);
-              addSubscription(values.name, values.price, values.contractAt);
+              updateSubscription(
+                subscription.id,
+                values.name,
+                values.price,
+                values.contractAt
+              );
             })}
           >
             <TextInput
@@ -88,19 +106,8 @@ const Add = ({ data, setData }) => {
           </form>
         </Box>
       </Modal>
-
-      <Group position="center">
-        <Button
-          onClick={() => setOpened(true)}
-          color="yellow"
-          radius="xl"
-          size="xl"
-        >
-          Add
-        </Button>
-      </Group>
     </div>
   );
 };
 
-export default Add;
+export default Detail;

@@ -1,8 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import Add from "./Button/Add";
+import React, { useCallback, useEffect, useState } from "react";
+import Add from "./Subscriptions/Button/Add";
 import Header from "./Header";
-import Lists from "./Lists";
+import Lists from "./Subscriptions/Lists";
+import { getSubscriptions } from "../api/subscriptions";
+import { async } from "@firebase/util";
 
 export type RowData = {
   id: number;
@@ -13,20 +15,32 @@ export type RowData = {
 
 function Content() {
   const [data, setData] = useState<RowData[]>([]);
+  const [change, setChange] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:1323/subscriptions")
-      .then((response: any) => response.data)
-      .then(setData)
-      .catch(console.error);
+    const inner = async () => {
+      const data = await getSubscriptions();
+      setData(data);
+    };
+    inner();
   }, []);
+
+  useEffect(() => {
+    if (change === true) {
+      const inner = async () => {
+        const data = await getSubscriptions();
+        setData(data);
+        setChange(false);
+      };
+      inner();
+    }
+  }, [change]);
 
   return (
     <div className="w-full">
       <Header />
       <Add data={data} setData={setData} />
-      <Lists data={data} setData={setData} />
+      <Lists data={data} setData={setData} setChange={setChange} />
     </div>
   );
 }

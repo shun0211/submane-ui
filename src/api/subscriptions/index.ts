@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Subscription } from "../../types";
 import { API_URL } from "../endpoint";
 
 export const getSubscriptions = async () => {
@@ -8,21 +9,20 @@ export const getSubscriptions = async () => {
     .catch((e) => console.error(e));
 };
 
-export const getSubscriptionsSubscriptionId = async (id: number) => {
-  return await axios
+export const getSubscriptionsSubscriptionId = (id: number) => {
+  return axios
     .get(`${API_URL}/subscriptions/${id}`)
     .then((res) => res.data)
     .catch((e) => console.error(e));
 };
 
 export const postSubscriptions = async (
-  id: number,
   name: string,
   price: number,
   contractAt: string
 ) => {
   return await axios
-    .post(`${API_URL}/subscriptions/${id}`, {
+    .post(`${API_URL}/subscriptions`, {
       name: name,
       price: price,
       contractAt: contractAt,
