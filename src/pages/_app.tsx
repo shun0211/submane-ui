@@ -3,7 +3,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 import React from "react";
-import { AuthProvider } from "../utils/auth/authProvider";
+import { AuthProvider } from "../hooks/authProvider";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

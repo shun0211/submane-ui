@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useContext } from "react";
 import styles from "../styles/Sidebar.module.css";
-import { AuthContext } from "../utils/auth/authProvider";
+import { AuthContext } from "../hooks/authProvider";
 
 const SidebarIcon = () => {
   const auth = useContext(AuthContext)

@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { TimeInput } from "@mantine/dates";
-import { AuthContext } from "../../../utils/auth/authProvider";
+import { AuthContext } from "../../../hooks/authProvider";
 import { postSubscriptions } from "../../../api/subscriptions";
 import { RowData } from "../../Content";
 import { Subscription } from "../../../types";

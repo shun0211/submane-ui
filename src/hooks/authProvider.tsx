@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
-import { getCurrentUser } from "../../api/users";
-import { User } from "../../types";
+import { getCurrentUser } from "../api/users";
+import { User } from "../types";
 
 type AuthContextProps = {
   currentUser: User | null | undefined;

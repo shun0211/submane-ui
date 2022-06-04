@@ -1,3 +1,4 @@
+import "../utils/firebase";
 import {
   Box,
   Button,
@@ -8,10 +9,12 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import axios from "axios";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext } from "react";
+import { signIn } from "../api/auth";
+import { User } from "../types";
+import { AuthContext } from "../hooks/authProvider";
 
 const Signin = () => {
   const router = useRouter();
@@ -21,6 +24,7 @@ const Signin = () => {
       password: "",
     },
   });
+  const { setCurrentUser } = useContext(AuthContext)
 
   const handleEmailAndPasswordSignin = async (
     email: string,
@@ -28,19 +32,16 @@ const Signin = () => {
   ) => {
     const auth = getAuth();
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
-    const currentUser = userCredential.user;
-    const token = await currentUser.getIdToken(true)
-    const res = await axios.post(
-      "http://localhost:1323/login",
-      { email: email, uid: currentUser.uid },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-    .catch((error) => console.log(error))
-    router.push('/')
+    const firebaseUser = userCredential.user;
+    const token = await firebaseUser.getIdToken(true)
+    try {
+      const res = await signIn(email, firebaseUser.uid, token)
+      const user: User = res.data
+      setCurrentUser(user)
+      router.push('/dashboard')
+    } catch (error) {
+      alert(error)
+    }
   }
 
   return (

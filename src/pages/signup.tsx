@@ -14,7 +14,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import axios from "axios";
 import "../utils/firebase";
 import { useRouter } from "next/router";
-import { AuthContext } from "../utils/auth/authProvider";
+import { AuthContext } from "../hooks/authProvider";
 import { User } from "../types";
 
 const Signup = () => {
