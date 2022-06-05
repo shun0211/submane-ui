@@ -40,6 +40,9 @@ const Signin = () => {
       const user: User = res.data
       setCurrentUser(user)
       router.push('/dashboard')
+      toast.success("ログインしました😊", {
+        autoClose: 3000,
+      })
     } catch {
       toast.error("予期せぬエラーが発生しました。")
     }

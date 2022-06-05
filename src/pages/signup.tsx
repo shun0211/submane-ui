@@ -11,7 +11,6 @@ import {
 import { useForm } from "@mantine/hooks";
 import React, { useContext } from "react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import axios from "axios";
 import "../utils/firebase";
 import { useRouter } from "next/router";
 import { AuthContext } from "../hooks/authProvider";
@@ -37,20 +36,26 @@ const Signup = () => {
     password: string
   ) => {
     const auth = getAuth();
-    const userCredentail = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    const firebaseUser = userCredentail.user;
-    const token = await firebaseUser.getIdToken(true);
     try {
-      const res = await signUp(email, firebaseUser.uid, token)
-      const user: User = res.data
-      setCurrentUser(user)
-      router.push("dashboard")
-    } catch {
-      toast.error("予期せぬエラーが発生しました。")
+      const userCredentail = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+        )
+      const firebaseUser = userCredentail.user;
+      const token = await firebaseUser.getIdToken(true);
+      try {
+        const res = await signUp(email, firebaseUser.uid, token)
+        const user: User = res.data
+        setCurrentUser(user)
+        router.push("dashboard")
+      } catch {
+        toast.error("予期せぬエラーが発生しました。")
+      }
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error("指定されたメールアドレスは既に使用されています。")
+      }
     }
   };
 

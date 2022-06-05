@@ -38,7 +38,7 @@ const Add = ({ data, setData }: {
     contractAt: string | null
   ) => {
     try {
-      const res = await postSubscriptions(name, price, contractAt, 45)
+      const res = await postSubscriptions(name, price, contractAt, currentUser?.id)
       const subscription: Subscription = res.data
       const newData = [
         ...data,
@@ -46,6 +46,7 @@ const Add = ({ data, setData }: {
       ]
       setData(newData)
       setOpened(false)
+      form.reset()
     } catch (error) {
       toast.error("予期せぬエラーが発生しました。")
     }

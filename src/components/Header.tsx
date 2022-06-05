@@ -1,6 +1,7 @@
 import { Menu, Avatar, UnstyledButton } from "@mantine/core";
 import { useRouter } from "next/router";
 import React, { forwardRef, useRef } from "react";
+import { toast } from "react-toastify";
 import { signOut } from "../api/auth";
 
 const Header = () => {
@@ -26,6 +27,7 @@ const Header = () => {
   const handleLogout = async () => {
     await signOut();
     router.push("/signin");
+    toast.success("ログアウトしました👋")
   };
 
   return (

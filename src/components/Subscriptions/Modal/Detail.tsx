@@ -76,7 +76,6 @@ const Detail = ({
         <Box sx={{ maxWidth: 400 }} mx="auto">
           <form
             onSubmit={form.onSubmit((values) => {
-              console.log(values);
               updateSubscription(
                 subscription.id,
                 values.name,

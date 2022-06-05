@@ -17,8 +17,8 @@ function Content() {
 
   useEffect(() => {
     const inner = async () => {
-      const data = await getSubscriptions();
-      setData(data);
+      const res = await getSubscriptions();
+      setData(res.data);
     };
     inner();
   }, []);
@@ -26,8 +26,8 @@ function Content() {
   useEffect(() => {
     if (changed === true) {
       const inner = async () => {
-        const data = await getSubscriptions();
-        setData(data);
+        const res = await getSubscriptions();
+        setData(res.data);
         setchanged(false);
       };
       inner();
