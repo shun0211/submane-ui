@@ -29,19 +29,19 @@ const Lists = ({
     setData(newData);
   };
 
-  const rows = data.map((row) => {
+  const rows = data.map((data) => {
     return (
       <>
-        <tr onClick={() => setOpened({ open: true, subscription: row })}>
-          <td>{row.name}</td>
-          <td>{row.price}</td>
-          <td>{row.contractAt}</td>
+        <tr onClick={() => setOpened({ open: true, subscription: data })}>
+          <td>{data.name}</td>
+          <td>{data.price}</td>
+          <td>{data.contractAt}</td>
           <td>
             <Trash
               className="h-5 w-5"
               onClick={(e) => {
                 e.stopPropagation();
-                removeSubscription(row.id);
+                removeSubscription(data.id);
               }}
             />
           </td>
