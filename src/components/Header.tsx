@@ -2,29 +2,30 @@ import { Menu, Avatar, UnstyledButton } from "@mantine/core";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { forwardRef, useRef } from "react";
+import { signOut } from "../api/auth";
 
 const Header = () => {
   const ref = useRef();
   const router = useRouter();
   // eslint-disable-next-line react/display-name
-  const UserButton = forwardRef((props, ref) => (
-    <UnstyledButton
-      ref={ref}
-      sx={(theme) => ({
-        display: "block",
-        width: "100%",
-        padding: theme.spacing.sm,
-      })}
-      {...props}
-    >
-      <Avatar src="/icon_dammy.png" alt="avatar" />
-    </UnstyledButton>
-  ));
+  const UserButton = forwardRef((props, ref) => {
+    return (
+      <UnstyledButton
+        ref={ref}
+        sx={(theme) => ({
+          display: "block",
+          width: "100%",
+          padding: theme.spacing.sm,
+        })}
+        {...props}
+      >
+        <Avatar src="/icon_dammy.png" alt="avatar" />
+      </UnstyledButton>
+    );
+  });
 
   const handleLogout = async () => {
-    const res = await axios
-      .delete("http://localhost:1323/logout")
-      .catch((error) => console.log(error));
+    await signOut();
     router.push("/signin");
   };
 

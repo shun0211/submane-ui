@@ -11,8 +11,12 @@ export const signIn = (email: string, uid: string, token: string) => {
 
 export const signUp = (email: string, uid: string, token: string) => {
   return axios.post(
-    "http://localhost:1323/users",
+    `${API_URL}/users`,
     { email: email, uid: uid },
     { headers: { Authorization: `Bearer ${token}` } }
   );
+};
+
+export const signOut = () => {
+  return axios.delete(`${API_URL}/logout`);
 };

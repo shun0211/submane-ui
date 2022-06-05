@@ -52,10 +52,13 @@ const Lists = ({
 
   return (
     <>
+      <div className="m-10">
       <Table
         horizontalSpacing="md"
         verticalSpacing="xs"
         sx={{ tableLayout: "fixed", minWidth: 700 }}
+        highlightOnHover={true}
+        className="cursor-pointer"
       >
         <thead>
           <tr>
@@ -75,6 +78,7 @@ const Lists = ({
           setchanged={setchanged}
         />
       )}
+      </div>
     </>
   );
 };
