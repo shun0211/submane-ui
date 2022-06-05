@@ -8,3 +8,11 @@ export const signIn = (email: string, uid: string, token: string) => {
     { headers: { Authorization: `Bearer ${token}` } }
   );
 };
+
+export const signUp = (email: string, uid: string, token: string) => {
+  return axios.post(
+    "http://localhost:1323/users",
+    { email: email, uid: uid },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+};

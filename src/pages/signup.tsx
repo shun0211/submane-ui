@@ -16,6 +16,8 @@ import "../utils/firebase";
 import { useRouter } from "next/router";
 import { AuthContext } from "../hooks/authProvider";
 import { User } from "../types";
+import { signUp } from "../api/auth";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const router = useRouter();
@@ -40,28 +42,16 @@ const Signup = () => {
       email,
       password
     );
-    const user = userCredentail.user;
-    const token = await user.getIdToken(true);
-    const res: any = await axios
-      .post(
-        "http://localhost:1323/users",
-        { email: email, uid: user.uid },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .catch((error) => console.log(error));
-
-    const currentUser: User = {
-      id: res.data.ID,
-      email: res.data.email,
-      name: res.data.name,
-    };
-
-    setCurrentUser(() => currentUser);
-    router.push("/dashboard");
+    const firebaseUser = userCredentail.user;
+    const token = await firebaseUser.getIdToken(true);
+    try {
+      const res = await signUp(email, firebaseUser.uid, token)
+      const user: User = res.data
+      setCurrentUser(user)
+      router.push("dashboard")
+    } catch {
+      toast.error("予期せぬエラーが発生しました。")
+    }
   };
 
   return (

@@ -15,6 +15,7 @@ import React, { useContext } from "react";
 import { signIn } from "../api/auth";
 import { User } from "../types";
 import { AuthContext } from "../hooks/authProvider";
+import { toast } from "react-toastify";
 
 const Signin = () => {
   const router = useRouter();
@@ -39,8 +40,8 @@ const Signin = () => {
       const user: User = res.data
       setCurrentUser(user)
       router.push('/dashboard')
-    } catch (error) {
-      alert(error)
+    } catch {
+      toast.error("予期せぬエラーが発生しました。")
     }
   }
 
