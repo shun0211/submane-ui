@@ -5,6 +5,7 @@ import { RowData } from "../Content";
 import Detail from "./Modal/Detail";
 import { Subscription } from "../../types";
 import { deleteSubscriptionsSubscriptionId } from "../../api/subscriptions";
+import { toast } from "react-toastify";
 
 const Lists = ({
   data,
@@ -24,9 +25,18 @@ const Lists = ({
   });
 
   const removeSubscription = async (id: number) => {
-    await deleteSubscriptionsSubscriptionId(id);
-    const newData = data.filter((el) => el.id !== id);
-    setData(newData);
+    try {
+      await deleteSubscriptionsSubscriptionId(id);
+      const newData = data.filter((el) => el.id !== id);
+      setData(newData);
+      toast.success("削除しました!", {
+        autoClose: 3000,
+      });
+    } catch {
+      toast.error("予期せぬエラーが発生しました😱", {
+        autoClose: 3000,
+      });
+    }
   };
 
   const rows = data.map((data) => {
@@ -41,7 +51,9 @@ const Lists = ({
               className="h-5 w-5"
               onClick={(e) => {
                 e.stopPropagation();
-                removeSubscription(data.id);
+                if (window.confirm("本当に削除しますか？")) {
+                  removeSubscription(data.id);
+                }
               }}
             />
           </td>
@@ -53,31 +65,31 @@ const Lists = ({
   return (
     <>
       <div className="m-10">
-      <Table
-        horizontalSpacing="md"
-        verticalSpacing="xs"
-        sx={{ tableLayout: "fixed", minWidth: 700 }}
-        highlightOnHover={true}
-        className="cursor-pointer"
-      >
-        <thead>
-          <tr>
-            <th>サブスク名</th>
-            <th>月額料金</th>
-            <th>契約日</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
-      {opened.subscription && (
-        <Detail
-          subscription={opened.subscription}
-          opened={opened.open}
-          setOpened={setOpened}
-          setchanged={setchanged}
-        />
-      )}
+        <Table
+          horizontalSpacing="md"
+          verticalSpacing="xs"
+          sx={{ tableLayout: "fixed", minWidth: 700 }}
+          highlightOnHover={true}
+          className="cursor-pointer"
+        >
+          <thead>
+            <tr>
+              <th>サブスク名</th>
+              <th>月額料金</th>
+              <th>契約日</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{rows}</tbody>
+        </Table>
+        {opened.subscription && (
+          <Detail
+            subscription={opened.subscription}
+            opened={opened.open}
+            setOpened={setOpened}
+            setchanged={setchanged}
+          />
+        )}
       </div>
     </>
   );

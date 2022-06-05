@@ -1,5 +1,4 @@
 import { Menu, Avatar, UnstyledButton } from "@mantine/core";
-import axios from "axios";
 import { useRouter } from "next/router";
 import React, { forwardRef, useRef } from "react";
 import { signOut } from "../api/auth";

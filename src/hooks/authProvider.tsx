@@ -14,7 +14,7 @@ export const AuthContext = createContext<AuthContextProps>({
   },
 });
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(
     undefined
   );
@@ -22,15 +22,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const inner = async () => {
       try {
-        const res = await getCurrentUser()
-        const user: User = res.data
-        setCurrentUser(user)
+        const res = await getCurrentUser();
+        const user: User = res.data;
+        setCurrentUser(user);
       } catch {
-        setCurrentUser(null)
+        setCurrentUser(null);
       }
-    }
-    inner()
-  }, [])
+    };
+    inner();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
