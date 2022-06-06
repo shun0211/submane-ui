@@ -2,7 +2,9 @@ import axios from "axios";
 import { API_URL } from "./endpoint";
 
 export const getUsersUserId = (id: number) => {
-  return axios.get(`${API_URL}/users/${id}`);
+  return axios.get(`${API_URL}/users/${id}`, {
+    withCredentials: true,
+  });
 };
 
 export const getCurrentUser = () => {

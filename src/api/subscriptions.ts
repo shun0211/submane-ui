@@ -4,12 +4,13 @@ import { API_URL } from "./endpoint";
 export const getSubscriptions = () => {
   return axios.get(`${API_URL}/subscriptions`, {
     withCredentials: true,
-    headers: { withCredentials: true },
   });
 };
 
 export const getSubscriptionsSubscriptionId = (id: number) => {
-  return axios.get(`${API_URL}/subscriptions/${id}`);
+  return axios.get(`${API_URL}/subscriptions/${id}`, {
+    withCredentials: true,
+  });
 };
 
 export const postSubscriptions = (
@@ -18,12 +19,18 @@ export const postSubscriptions = (
   contractAt: string | null,
   userId: number
 ) => {
-  return axios.post(`${API_URL}/subscriptions`, {
-    name: name,
-    price: price,
-    contractAt: contractAt,
-    userId: userId,
-  });
+  return axios.post(
+    `${API_URL}/subscriptions`,
+    {
+      name: name,
+      price: price,
+      contractAt: contractAt,
+      userId: userId,
+    },
+    {
+      withCredentials: true,
+    }
+  );
 };
 
 export const putSubscriptionsSubscriptionId = (
@@ -32,13 +39,21 @@ export const putSubscriptionsSubscriptionId = (
   price: number,
   contractAt: string
 ) => {
-  return axios.put(`${API_URL}/subscriptions/${id}`, {
-    name: name,
-    price: price,
-    contractAt: contractAt,
-  });
+  return axios.put(
+    `${API_URL}/subscriptions/${id}`,
+    {
+      name: name,
+      price: price,
+      contractAt: contractAt,
+    },
+    {
+      withCredentials: true,
+    }
+  );
 };
 
 export const deleteSubscriptionsSubscriptionId = (id: number) => {
-  return axios.delete(`${API_URL}/subscriptions/${id}`);
+  return axios.delete(`${API_URL}/subscriptions/${id}`, {
+    withCredentials: true,
+  });
 };

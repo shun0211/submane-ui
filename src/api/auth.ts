@@ -7,7 +7,7 @@ export const signIn = (email: string, uid: string, token: string) => {
     { email: email, uid: uid },
     {
       withCredentials: true,
-      headers: { Authorization: `Bearer ${token}`, withCredentials: true },
+      headers: { Authorization: `Bearer ${token}` },
     }
   );
 };
@@ -16,10 +16,10 @@ export const signUp = (email: string, uid: string, token: string) => {
   return axios.post(
     `${API_URL}/users`,
     { email: email, uid: uid },
-    { headers: { Authorization: `Bearer ${token}` } }
+    { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
   );
 };
 
 export const signOut = () => {
-  return axios.delete(`${API_URL}/logout`);
+  return axios.delete(`${API_URL}/logout`, { withCredentials: true });
 };

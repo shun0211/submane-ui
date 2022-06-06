@@ -10,16 +10,18 @@ export default function Dashboard() {
   const router = useRouter();
   const { isAuthChecking, currentUser } = useCurrentUser();
 
-  if(isAuthChecking) return (<Loader />);
+  if (isAuthChecking) return <Loader />;
 
-  if(!currentUser) {
-    router.push("/signin")
-  };
+  if (!currentUser) {
+    router.push("/signin");
+  }
 
   return (
-    <div className={styles.Home}>
-      <Sidebar />
-      <Content />
-    </div>
+    currentUser && (
+      <div className={styles.Home}>
+        <Sidebar />
+        <Content />
+      </div>
+    )
   );
 }
