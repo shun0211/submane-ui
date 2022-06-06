@@ -27,7 +27,7 @@ const Header = () => {
   const handleLogout = async () => {
     await signOut();
     router.push("/signin");
-    toast.success("ログアウトしました👋")
+    toast.success("ログアウトしました👋");
   };
 
   return (

@@ -2,7 +2,10 @@ import axios from "axios";
 import { API_URL } from "./endpoint";
 
 export const getSubscriptions = () => {
-  return axios.get(`${API_URL}/subscriptions`);
+  return axios.get(`${API_URL}/subscriptions`, {
+    withCredentials: true,
+    headers: { withCredentials: true },
+  });
 };
 
 export const getSubscriptionsSubscriptionId = (id: number) => {

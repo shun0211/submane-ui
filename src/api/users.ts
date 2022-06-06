@@ -6,5 +6,8 @@ export const getUsersUserId = (id: number) => {
 };
 
 export const getCurrentUser = () => {
-  return axios.get(`${API_URL}/current-user`)
-}
+  return axios.get(`${API_URL}/current-user`, {
+    withCredentials: true,
+    headers: { withCredentials: true },
+  });
+};
