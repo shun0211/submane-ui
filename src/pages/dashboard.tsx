@@ -14,14 +14,13 @@ export default function Dashboard() {
 
   if (!currentUser) {
     router.push("/signin");
+    return null;
   }
 
   return (
-    currentUser && (
-      <div className={styles.Home}>
-        <Sidebar />
-        <Content />
-      </div>
-    )
+    <div className={styles.Home}>
+      <Sidebar />
+      <Content />
+    </div>
   );
 }
