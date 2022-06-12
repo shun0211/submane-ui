@@ -37,7 +37,7 @@ export const putSubscriptionsSubscriptionId = (
   id: number,
   name: string,
   price: number,
-  contractAt: string
+  contractAt: string | null
 ) => {
   return axios.put(
     `${API_URL}/subscriptions/${id}`,

@@ -16,7 +16,6 @@ import { Subscription } from "../../../types";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 
-
 const Add = ({
   data,
   setData,
@@ -31,7 +30,6 @@ const Add = ({
   const form = useForm({
     initialValues: {
       name: "",
-      contractAt: "",
       price: 0,
     },
   });
@@ -122,7 +120,7 @@ const Add = ({
           radius="xl"
           size="xl"
         >
-          Add
+          登録
         </Button>
       </Group>
     </div>

@@ -6,9 +6,11 @@ import {
   NumberInput,
   TextInput,
 } from "@mantine/core";
-import { TimeInput } from "@mantine/dates";
+import { Calendar } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import React from "react";
+import dayjs from "dayjs";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { putSubscriptionsSubscriptionId } from "../../../api/subscriptions";
 import { Subscription } from "../../../types";
 
@@ -32,28 +34,37 @@ const Detail = ({
     initialValues: {
       name: subscription.name,
       price: subscription.price,
-      contractAt: subscription.contractAt,
     },
   });
+  const [dateInput, setDateInput] = useState<Date | null>(new Date());
 
   const updateSubscription = async (
     id: number,
     name: string,
     price: number,
-    contractAt: string
+    contractAt: string | null
   ) => {
-    await putSubscriptionsSubscriptionId(
-      id,
-      name,
-      price,
-      contractAt
-    );
-    setOpened({
-      open: false,
-      subscription: null,
-    });
-    setchanged(true);
+    try {
+      await putSubscriptionsSubscriptionId(
+        id,
+        name,
+        price,
+        contractAt
+      );
+      setOpened({
+        open: false,
+        subscription: null,
+      });
+      setchanged(true);
+    } catch {
+      toast.error("予期せぬエラーが発生しました。")
+    }
   };
+
+  // HACK: 共通化できそうなのでやる
+  const formatDateInput = (dateInput: Date): string => {
+    return dayjs(dateInput).format('YYYY-MM-DD')
+  }
 
   return (
     <div>
@@ -80,7 +91,7 @@ const Detail = ({
                 subscription.id,
                 values.name,
                 values.price,
-                values.contractAt
+                dateInput ? formatDateInput(dateInput) : null,
               );
             })}
           >
@@ -98,7 +109,8 @@ const Detail = ({
               placeholder="1000"
               {...form.getInputProps("price")}
             />
-            <TimeInput label="契約日" />
+            <span>契約日</span>
+            <Calendar value={dateInput} onChange={setDateInput} />;
             <Group position="right" mt="md">
               <Button type="submit">登録</Button>
             </Group>
