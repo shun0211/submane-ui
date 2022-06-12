@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { useForm } from "@mantine/form";
+import Axios from "axios";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -56,8 +57,10 @@ const Detail = ({
         subscription: null,
       });
       setchanged(true);
-    } catch {
-      toast.error("予期せぬエラーが発生しました。")
+    } catch (e) {
+      if (Axios.isAxiosError(e) && e.response?.status === 400 && Array.isArray(e.response.data)) {
+        e.response.data.map((message: string) => toast.error(message))
+      }
     }
   };
 

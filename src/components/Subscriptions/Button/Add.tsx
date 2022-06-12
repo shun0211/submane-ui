@@ -15,6 +15,7 @@ import { RowData } from "../../Content";
 import { Subscription } from "../../../types";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import Axios from "axios";
 
 const Add = ({
   data,
@@ -62,8 +63,10 @@ const Add = ({
       toast.success("作成しました！", {
         autoClose: 3000,
       });
-    } catch (error) {
-      toast.error("予期せぬエラーが発生しました。");
+    } catch (e) {
+      if (Axios.isAxiosError(e) && e.response?.status === 400 && Array.isArray(e.response.data)) {
+        e.response.data.map((message: string) => toast.error(message))
+      }
     }
   };
 
