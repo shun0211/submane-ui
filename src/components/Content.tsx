@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Add from "./Subscriptions/Button/Add";
 import Header from "./Header";
 import Lists from "./Subscriptions/Lists";
 import { getSubscriptions } from "../api/subscriptions";
+import { AuthContext } from "../hooks/authProvider";
 
 export type RowData = {
   id: number;
@@ -11,24 +12,30 @@ export type RowData = {
   contractAt: string | null;
 };
 
+
 function Content() {
   const [data, setData] = useState<RowData[]>([]);
   const [changed, setchanged] = useState(false);
+  const { currentUser } = useContext(AuthContext)
 
   useEffect(() => {
     const inner = async () => {
-      const res = await getSubscriptions();
-      setData(res.data);
-    };
+      if (currentUser) {
+        const res = await getSubscriptions(currentUser.id);
+        setData(res.data);
+      };
+    }
     inner();
   }, []);
 
   useEffect(() => {
     if (changed === true) {
       const inner = async () => {
-        const res = await getSubscriptions();
-        setData(res.data);
-        setchanged(false);
+        if (currentUser) {
+          const res = await getSubscriptions(currentUser.id);
+          setData(res.data);
+          setchanged(false);
+        }
       };
       inner();
     }
