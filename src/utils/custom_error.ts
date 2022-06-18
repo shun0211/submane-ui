@@ -17,3 +17,11 @@ export function isErrorMessage(value: any): value is errorMessage {
     typeof value.forDeveloperMessage == "string"
   );
 }
+
+export class BadRequestError extends Error {
+  constructor(errorMessages: string[]) {
+    super(errorMessages.join());
+    this.name = "BadRequestError"
+    this.errorMessages = errorMessages
+  }
+}
