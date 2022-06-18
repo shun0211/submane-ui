@@ -3,13 +3,14 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Group,
   Space,
   TextInput,
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { signIn } from "../api/auth";
@@ -17,6 +18,7 @@ import { AuthContext } from "../hooks/authProvider";
 import { toast } from "react-toastify";
 import { FirebaseError } from "firebase/app";
 import {  NotFoundError } from "../utils/custom_error";
+import Image from "next/image";
 
 const Signin = () => {
   const router = useRouter();
@@ -58,6 +60,30 @@ const Signin = () => {
     })
   }
 
+  const handleGoogleLogin = async () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    const userCredential = await signInWithPopup(auth, provider);
+    const firebaseUser = userCredential.user;
+    const token = await firebaseUser.getIdToken(true);
+    if (firebaseUser.email == null) return false;
+    const user = await signIn(
+      firebaseUser.email,
+      firebaseUser.uid,
+      token
+    ).catch((e) => {
+      if (e instanceof NotFoundError) {
+        toast.error(e.message)
+      }
+      throw e
+    });
+    setCurrentUser(user)
+    router.push("dashboard")
+    toast.success("ログインしました😊", {
+      autoClose: 3000,
+    })
+  }
+
   return (
     <div className="min-h-screen bg-sky-200">
       <Space className="h-10" />
@@ -65,6 +91,23 @@ const Signin = () => {
         <Title order={3} className="text-center">
           ログイン
         </Title>
+        <Box sx={{ maxWidth: 300 }} mx="auto" className="text-center pt-5">
+          <button onClick={handleGoogleLogin}>
+            <Image
+              src="/btn_google_signin_light_normal_web.png"
+              alt="Google Login"
+              width={191}
+              height={46}
+            />
+          </button>
+        </Box>
+
+        <Divider
+          label="Or continue with email"
+          labelPosition="center"
+          my="lg"
+        />
+
         <Box sx={{ maxWidth: 300 }} mx="auto">
           <form
             onSubmit={form.onSubmit((values) => {
