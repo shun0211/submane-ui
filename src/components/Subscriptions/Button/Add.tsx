@@ -45,7 +45,8 @@ const Add = ({
         name,
         price,
         contractAt,
-        currentUser?.id
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        currentUser!.id
       );
       const subscription: Subscription = res.data;
       const newData = [

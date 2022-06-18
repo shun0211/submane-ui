@@ -13,9 +13,10 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { signIn } from "../api/auth";
-import { User } from "../types";
 import { AuthContext } from "../hooks/authProvider";
 import { toast } from "react-toastify";
+import { FirebaseError } from "firebase/app";
+import {  NotFoundError } from "../utils/custom_error";
 
 const Signin = () => {
   const router = useRouter();
@@ -33,19 +34,28 @@ const Signin = () => {
   ) => {
     const auth = getAuth();
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      .catch((e) => {
+        if (e instanceof(FirebaseError) && e.code === "auth/user-not-found") {
+          toast.error("ユーザが見つかりませんでした😱")
+        } else if (e instanceof(FirebaseError) && e.code === "auth/invalid-email") {
+          toast.error("不正なメールアドレスです")
+        }
+        throw e
+      })
     const firebaseUser = userCredential.user;
     const token = await firebaseUser.getIdToken(true)
-    try {
-      const res = await signIn(email, firebaseUser.uid, token)
-      const user: User = res.data
-      setCurrentUser(user)
-      router.push('/dashboard')
-      toast.success("ログインしました😊", {
-        autoClose: 3000,
+    const user = await signIn(email, firebaseUser.uid, token)
+      .catch((e) => {
+        if (e instanceof NotFoundError) {
+          toast.error(e.message)
+        }
+        throw e
       })
-    } catch {
-      toast.error("予期せぬエラーが発生しました。")
-    }
+    setCurrentUser(user)
+    router.push('/dashboard')
+    toast.success("ログインしました😊", {
+      autoClose: 3000,
+    })
   }
 
   return (

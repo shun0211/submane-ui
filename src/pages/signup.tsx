@@ -17,6 +17,7 @@ import { AuthContext } from "../hooks/authProvider";
 import { User } from "../types";
 import { signUp } from "../api/auth";
 import { toast } from "react-toastify";
+import { FirebaseError } from "firebase/app";
 
 const Signup = () => {
   const router = useRouter();
@@ -52,8 +53,8 @@ const Signup = () => {
       } catch {
         toast.error("予期せぬエラーが発生しました。")
       }
-    } catch (error: any) {
-      if (error.code === 'auth/email-already-in-use') {
+    } catch (e) {
+      if (e instanceof(FirebaseError) && e.code === 'auth/email-already-in-use') {
         toast.error("指定されたメールアドレスは既に使用されています。")
       }
     }

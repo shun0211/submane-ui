@@ -10,3 +10,8 @@ export type Subscription = {
   price: number;
   contractAt: string;
 }
+
+export type errorMessage = {
+  message: string;
+  forDeveloperMessage: string;
+};
