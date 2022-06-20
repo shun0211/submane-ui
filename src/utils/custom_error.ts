@@ -19,8 +19,10 @@ export function isErrorMessage(value: any): value is errorMessage {
 }
 
 export class BadRequestError extends Error {
+  errorMessages: string[];
+
   constructor(errorMessages: string[]) {
-    super(errorMessages.join());
+    super()
     this.name = "BadRequestError"
     this.errorMessages = errorMessages
   }

@@ -82,7 +82,7 @@ const Signup = () => {
       token
     ).catch((e) => {
       if (e instanceof BadRequestError) {
-        e.errorMessages.map((message: string) => toast.error(message));
+        e.errorMessages.map((message) => toast.error(message));
       }
       throw e;
     });
