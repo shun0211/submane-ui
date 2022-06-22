@@ -11,13 +11,15 @@ const Lists = ({
   setSubscriptions,
   setchanged,
   activePage,
-  setPage
+  setPage,
+  totalPages,
 }: {
   subscriptions: Subscription[];
   setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
   setchanged: React.Dispatch<React.SetStateAction<boolean>>;
   activePage: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  totalPages: number;
 }) => {
   const [opened, setOpened] = useState<{
     open: boolean;
@@ -45,7 +47,9 @@ const Lists = ({
   const rows = subscriptions.map((subscription) => {
     return (
       <>
-        <tr onClick={() => setOpened({ open: true, subscription: subscription })}>
+        <tr
+          onClick={() => setOpened({ open: true, subscription: subscription })}
+        >
           <td>{subscription.name}</td>
           <td>{subscription.price}</td>
           <td>{subscription.contractAt}</td>
@@ -93,7 +97,7 @@ const Lists = ({
             setchanged={setchanged}
           />
         )}
-        <Pagination page={activePage} onChange={setPage} total={20} />
+        <Pagination page={activePage} onChange={setPage} total={totalPages} />
       </div>
     </>
   );

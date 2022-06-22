@@ -9,16 +9,18 @@ import { Subscription } from "../types";
 function Content() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [changed, setchanged] = useState(false);
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
   const [activePage, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const inner = async () => {
       if (currentUser) {
-        const res = await getSubscriptions(currentUser.id, 1);
+        const res = await getSubscriptions(currentUser.id, activePage);
         setSubscriptions(res.data.subscriptions);
-      };
-    }
+        setTotalPages(res.data.page.totalPages);
+      }
+    };
     inner();
   }, []);
 
@@ -26,8 +28,9 @@ function Content() {
     if (changed === true) {
       const inner = async () => {
         if (currentUser) {
-          const res = await getSubscriptions(currentUser.id, 1);
+          const res = await getSubscriptions(currentUser.id, activePage);
           setSubscriptions(res.data.subscriptions);
+          setTotalPages(res.data.page.totalPages);
           setchanged(false);
         }
       };
@@ -39,7 +42,14 @@ function Content() {
     <div className="w-full">
       <Header />
       <Add subscriptions={subscriptions} setSubscriptions={setSubscriptions} />
-      <Lists subscriptions={subscriptions} setSubscriptions={setSubscriptions} setchanged={setchanged} activePage={activePage} setPage={setPage} />
+      <Lists
+        subscriptions={subscriptions}
+        setSubscriptions={setSubscriptions}
+        setchanged={setchanged}
+        activePage={activePage}
+        setPage={setPage}
+        totalPages={totalPages}
+      />
     </div>
   );
 }
