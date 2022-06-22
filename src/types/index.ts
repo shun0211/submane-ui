@@ -8,7 +8,7 @@ export type Subscription = {
   id: number;
   name: string;
   price: number;
-  contractAt: string;
+  contractAt: string | null;
 }
 
 export type errorMessage = {

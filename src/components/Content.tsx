@@ -4,25 +4,19 @@ import Header from "./Header";
 import Lists from "./Subscriptions/Lists";
 import { getSubscriptions } from "../api/subscriptions";
 import { AuthContext } from "../hooks/authProvider";
-
-export type RowData = {
-  id: number;
-  name: string;
-  price: number;
-  contractAt: string | null;
-};
-
+import { Subscription } from "../types";
 
 function Content() {
-  const [data, setData] = useState<RowData[]>([]);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [changed, setchanged] = useState(false);
   const { currentUser } = useContext(AuthContext)
+  const [activePage, setPage] = useState(1);
 
   useEffect(() => {
     const inner = async () => {
       if (currentUser) {
-        const res = await getSubscriptions(currentUser.id);
-        setData(res.data);
+        const res = await getSubscriptions(currentUser.id, 1);
+        setSubscriptions(res.data.subscriptions);
       };
     }
     inner();
@@ -32,8 +26,8 @@ function Content() {
     if (changed === true) {
       const inner = async () => {
         if (currentUser) {
-          const res = await getSubscriptions(currentUser.id);
-          setData(res.data);
+          const res = await getSubscriptions(currentUser.id, 1);
+          setSubscriptions(res.data.subscriptions);
           setchanged(false);
         }
       };
@@ -44,8 +38,8 @@ function Content() {
   return (
     <div className="w-full">
       <Header />
-      <Add data={data} setData={setData} />
-      <Lists data={data} setData={setData} setchanged={setchanged} />
+      <Add subscriptions={subscriptions} setSubscriptions={setSubscriptions} />
+      <Lists subscriptions={subscriptions} setSubscriptions={setSubscriptions} setchanged={setchanged} activePage={activePage} setPage={setPage} />
     </div>
   );
 }

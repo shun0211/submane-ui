@@ -11,18 +11,17 @@ import { useForm } from "@mantine/form";
 import { Calendar } from "@mantine/dates";
 import { AuthContext } from "../../../hooks/authProvider";
 import { postSubscriptions } from "../../../api/subscriptions";
-import { RowData } from "../../Content";
 import { Subscription } from "../../../types";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import Axios from "axios";
 
 const Add = ({
-  data,
-  setData,
+  subscriptions,
+  setSubscriptions,
 }: {
-  data: RowData[];
-  setData: React.Dispatch<React.SetStateAction<RowData[]>>;
+  subscriptions: Subscription[];
+  setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
 }) => {
   const [opened, setOpened] = useState(false);
   const { currentUser } = useContext(AuthContext);
@@ -49,8 +48,8 @@ const Add = ({
         currentUser!.id
       );
       const subscription: Subscription = res.data;
-      const newData = [
-        ...data,
+      const newSubscriptions = [
+        ...subscriptions,
         {
           id: subscription.id,
           name: subscription.name,
@@ -58,7 +57,7 @@ const Add = ({
           contractAt: subscription.contractAt,
         },
       ];
-      setData(newData);
+      setSubscriptions(newSubscriptions);
       setOpened(false);
       form.reset();
       toast.success("作成しました！", {

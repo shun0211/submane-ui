@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { Table } from "@mantine/core";
+import { Pagination, Table } from "@mantine/core";
 import { Trash } from "tabler-icons-react";
-import { RowData } from "../Content";
 import Detail from "./Modal/Detail";
 import { Subscription } from "../../types";
 import { deleteSubscriptionsSubscriptionId } from "../../api/subscriptions";
 import { toast } from "react-toastify";
 
 const Lists = ({
-  data,
-  setData,
+  subscriptions,
+  setSubscriptions,
   setchanged,
+  activePage,
+  setPage
 }: {
-  data: RowData[];
-  setData: React.Dispatch<React.SetStateAction<RowData[]>>;
+  subscriptions: Subscription[];
+  setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
   setchanged: React.Dispatch<React.SetStateAction<boolean>>;
+  activePage: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const [opened, setOpened] = useState<{
     open: boolean;
@@ -27,8 +30,8 @@ const Lists = ({
   const removeSubscription = async (id: number) => {
     try {
       await deleteSubscriptionsSubscriptionId(id);
-      const newData = data.filter((el) => el.id !== id);
-      setData(newData);
+      const newSubscriptions = subscriptions.filter((el) => el.id !== id);
+      setSubscriptions(newSubscriptions);
       toast.success("削除しました!", {
         autoClose: 3000,
       });
@@ -39,20 +42,20 @@ const Lists = ({
     }
   };
 
-  const rows = data.map((data) => {
+  const rows = subscriptions.map((subscription) => {
     return (
       <>
-        <tr onClick={() => setOpened({ open: true, subscription: data })}>
-          <td>{data.name}</td>
-          <td>{data.price}</td>
-          <td>{data.contractAt}</td>
+        <tr onClick={() => setOpened({ open: true, subscription: subscription })}>
+          <td>{subscription.name}</td>
+          <td>{subscription.price}</td>
+          <td>{subscription.contractAt}</td>
           <td>
             <Trash
               className="h-5 w-5"
               onClick={(e) => {
                 e.stopPropagation();
                 if (window.confirm("本当に削除しますか？")) {
-                  removeSubscription(data.id);
+                  removeSubscription(subscription.id);
                 }
               }}
             />
@@ -90,6 +93,7 @@ const Lists = ({
             setchanged={setchanged}
           />
         )}
+        <Pagination page={activePage} onChange={setPage} total={20} />
       </div>
     </>
   );
