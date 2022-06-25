@@ -41,6 +41,8 @@ const Signin = () => {
           toast.error("ユーザが見つかりませんでした😱")
         } else if (e instanceof(FirebaseError) && e.code === "auth/invalid-email") {
           toast.error("不正なメールアドレスです")
+        } else if (e instanceof(FirebaseError) && e.code === "auth/wrong-password") {
+          toast.error("パスワードが正しくありません")
         }
         throw e
       })
