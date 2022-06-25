@@ -115,7 +115,7 @@ const Detail = ({
             <span>契約日</span>
             <Calendar value={dateInput} onChange={setDateInput} />;
             <Group position="right" mt="md">
-              <Button type="submit">登録</Button>
+              <Button type="submit">変更する</Button>
             </Group>
           </form>
         </Box>

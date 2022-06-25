@@ -97,7 +97,12 @@ const Lists = ({
             setchanged={setchanged}
           />
         )}
-        <Pagination page={activePage} onChange={setPage} total={totalPages} className="justify-center my-10" />
+        <Pagination
+          page={activePage}
+          onChange={setPage}
+          total={totalPages}
+          className="justify-center my-10"
+        />
       </div>
     </>
   );
