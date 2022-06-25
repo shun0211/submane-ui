@@ -49,7 +49,7 @@ const Lists = (props: Props) => {
               <th>サブスク名</th>
               <th>月額料金</th>
               <th>契約日</th>
-              <th></th>
+              <th className="w-10"></th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>

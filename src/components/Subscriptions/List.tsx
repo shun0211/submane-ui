@@ -42,9 +42,9 @@ export const List = (props: Props) => {
         <td>{props.subscription.name}</td>
         <td>{props.subscription.price}</td>
         <td>{props.subscription.contractAt}</td>
-        <td>
+        <td className="relative">
           <Trash
-            className="h-5 w-5"
+            className="h-5 w-5 absolute left-0 top-0 bottom-0 m-auto"
             onClick={(e) => {
               e.stopPropagation();
               if (window.confirm("本当に削除しますか？")) {
