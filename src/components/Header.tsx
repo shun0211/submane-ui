@@ -1,14 +1,13 @@
 import { Menu, Avatar, UnstyledButton } from "@mantine/core";
 import { useRouter } from "next/router";
-import React, { forwardRef, useRef } from "react";
+import React, { forwardRef } from "react";
 import { toast } from "react-toastify";
 import { signOut } from "../api/auth";
 
 const Header = () => {
-  const ref = useRef();
   const router = useRouter();
   // eslint-disable-next-line react/display-name
-  const UserButton = forwardRef((props, ref) => {
+  const UserButton = forwardRef<HTMLButtonElement>((props, ref) => {
     return (
       <UnstyledButton
         ref={ref}
@@ -32,7 +31,7 @@ const Header = () => {
 
   return (
     <div className="flex justify-end">
-      <Menu control={<UserButton ref={ref} />}>
+      <Menu control={<UserButton />}>
         {<Menu.Item onClick={handleLogout}>ログアウト</Menu.Item>}
       </Menu>
     </div>
