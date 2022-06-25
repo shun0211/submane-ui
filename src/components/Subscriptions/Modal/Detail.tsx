@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Group,
+  InputWrapper,
   Modal,
   NumberInput,
   TextInput,
@@ -46,28 +47,27 @@ const Detail = ({
     contractAt: string | null
   ) => {
     try {
-      await putSubscriptionsSubscriptionId(
-        id,
-        name,
-        price,
-        contractAt
-      );
+      await putSubscriptionsSubscriptionId(id, name, price, contractAt);
       setOpened({
         open: false,
         subscription: null,
       });
       setchanged(true);
     } catch (e) {
-      if (Axios.isAxiosError(e) && e.response?.status === 400 && Array.isArray(e.response.data)) {
-        e.response.data.map((message: string) => toast.error(message))
+      if (
+        Axios.isAxiosError(e) &&
+        e.response?.status === 400 &&
+        Array.isArray(e.response.data)
+      ) {
+        e.response.data.map((message: string) => toast.error(message));
       }
     }
   };
 
   // HACK: 共通化できそうなのでやる
   const formatDateInput = (dateInput: Date): string => {
-    return dayjs(dateInput).format('YYYY-MM-DD')
-  }
+    return dayjs(dateInput).format("YYYY-MM-DD");
+  };
 
   return (
     <div>
@@ -94,7 +94,7 @@ const Detail = ({
                 subscription.id,
                 values.name,
                 values.price,
-                dateInput ? formatDateInput(dateInput) : null,
+                dateInput ? formatDateInput(dateInput) : null
               );
             })}
           >
@@ -112,8 +112,9 @@ const Detail = ({
               placeholder="1000"
               {...form.getInputProps("price")}
             />
-            <span>契約日</span>
-            <Calendar value={dateInput} onChange={setDateInput} />;
+            <InputWrapper label="契約日" className="mt-2">
+              <Calendar value={dateInput} onChange={setDateInput} fullWidth />
+            </InputWrapper>
             <Group position="right" mt="md">
               <Button type="submit">変更する</Button>
             </Group>
