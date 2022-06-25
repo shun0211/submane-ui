@@ -24,8 +24,8 @@ export const postSubscriptions = (
     {
       name: name,
       price: price,
-      contractAt: contractAt,
-      userId: userId,
+      contract_at: contractAt,
+      user_id: userId,
     },
     {
       withCredentials: true,
@@ -44,7 +44,7 @@ export const putSubscriptionsSubscriptionId = (
     {
       name: name,
       price: price,
-      contractAt: contractAt,
+      contract_at: contractAt,
     },
     {
       withCredentials: true,
