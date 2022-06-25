@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_URL } from "./endpoint";
 
-export const getSubscriptions = (userId: number, page: number, perPage = 20) => {
+export const getSubscriptions = (userId: number, page: number, perPage = 10) => {
   return axios.get(`${API_URL}/subscriptions?userId=${userId}&page=${page}&perPage=${perPage}`, {
     withCredentials: true,
   });
