@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { putSubscriptionsSubscriptionId } from "../../../api/subscriptions";
 import { Subscription } from "../../../types";
+import { BadRequestError } from "../../../utils/custom_error";
 
 const Detail = ({
   subscription,
@@ -46,22 +47,18 @@ const Detail = ({
     price: number,
     contractAt: string | null
   ) => {
-    try {
-      await putSubscriptionsSubscriptionId(id, name, price, contractAt);
-      setOpened({
-        open: false,
-        subscription: null,
-      });
-      setchanged(true);
-    } catch (e) {
-      if (
-        Axios.isAxiosError(e) &&
-        e.response?.status === 400 &&
-        Array.isArray(e.response.data)
-      ) {
-        e.response.data.map((message: string) => toast.error(message));
+    await putSubscriptionsSubscriptionId(id, name, price, contractAt).catch(
+      (e) => {
+        if (e instanceof BadRequestError) {
+          e.errorMessages.map((message: string) => toast.error(message));
+        }
       }
-    }
+    );
+    setOpened({
+      open: false,
+      subscription: null,
+    });
+    setchanged(true);
   };
 
   // HACK: 共通化できそうなのでやる
