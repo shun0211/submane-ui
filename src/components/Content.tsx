@@ -18,25 +18,25 @@ function Content() {
       if (currentUser) {
         const res = await getSubscriptions(currentUser.id, activePage);
         setSubscriptions(res.data.subscriptions);
-        setTotalPages(res.data.page.totalPages);
+        setTotalPages(res.data.page.total_pages);
+        setPage(res.data.page.page);
       }
     };
     inner();
   }, []);
 
   useEffect(() => {
-    if (changed === true) {
-      const inner = async () => {
-        if (currentUser) {
-          const res = await getSubscriptions(currentUser.id, activePage);
-          setSubscriptions(res.data.subscriptions);
-          setTotalPages(res.data.page.totalPages);
-          setchanged(false);
-        }
-      };
-      inner();
-    }
-  }, [changed]);
+    const inner = async () => {
+      if (currentUser) {
+        const res = await getSubscriptions(currentUser.id, activePage);
+        setSubscriptions(res.data.subscriptions);
+        setTotalPages(res.data.page.total_pages);
+        setPage(res.data.page.page);
+        setchanged(false);
+      }
+    };
+    inner();
+  }, [changed, activePage]);
 
   return (
     <div className="w-full">
