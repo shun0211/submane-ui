@@ -44,9 +44,9 @@ const Detail = ({
     id: number,
     name: string,
     price: number,
-    contractAt: string | null
+    contractedAt: string | null
   ) => {
-    await putSubscriptionsSubscriptionId(id, name, price, contractAt).catch(
+    await putSubscriptionsSubscriptionId(id, name, price, contractedAt).catch(
       (e) => {
         if (e instanceof BadRequestError) {
           e.errorMessages.map((message: string) => toast.error(message));

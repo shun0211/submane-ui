@@ -38,13 +38,13 @@ const Add = ({
   const addSubscription = async (
     name: string,
     price: number,
-    contractAt: string | null
+    contractedAt: string | null
   ) => {
     try {
       const res = await postSubscriptions(
         name,
         price,
-        contractAt,
+        contractedAt,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         currentUser!.id
       );
@@ -55,7 +55,7 @@ const Add = ({
           id: subscription.id,
           name: subscription.name,
           price: subscription.price,
-          contractAt: subscription.contractAt,
+          contractedAt: subscription.contractedAt,
         },
       ];
       setSubscriptions(newSubscriptions);
@@ -65,15 +65,19 @@ const Add = ({
         autoClose: 3000,
       });
     } catch (e) {
-      if (Axios.isAxiosError(e) && e.response?.status === 400 && Array.isArray(e.response.data)) {
-        e.response.data.map((message: string) => toast.error(message))
+      if (
+        Axios.isAxiosError(e) &&
+        e.response?.status === 400 &&
+        Array.isArray(e.response.data)
+      ) {
+        e.response.data.map((message: string) => toast.error(message));
       }
     }
   };
 
   const formatDateInput = (dateInput: Date): string => {
-    return dayjs(dateInput).format('YYYY-MM-DD')
-  }
+    return dayjs(dateInput).format("YYYY-MM-DD");
+  };
 
   return (
     <div>
@@ -91,7 +95,11 @@ const Add = ({
         <Box sx={{ maxWidth: 400 }} mx="auto">
           <form
             onSubmit={form.onSubmit((values) => {
-              addSubscription(values.name, values.price, dateInput ? formatDateInput(dateInput) : null);
+              addSubscription(
+                values.name,
+                values.price,
+                dateInput ? formatDateInput(dateInput) : null
+              );
             })}
           >
             <TextInput

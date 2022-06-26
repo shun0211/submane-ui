@@ -11,7 +11,7 @@ getSubscriptionsApi.interceptors.response.use((response) => {
     (subscription: any) => {
       const camelCaseSubscription = {
         ...subscription,
-        contractAt: subscription.contract_at,
+        contractedAt: subscription.contracted_at,
       };
       return camelCaseSubscription;
     }
@@ -22,7 +22,7 @@ getSubscriptionsApi.interceptors.response.use((response) => {
     perPage: response.data.page.per_page,
     totalCount: response.data.page.total_count,
     totalPages: response.data.page.total_pages,
-  }
+  };
 
   const formattedResponseData = {
     subscriptions: camelCaseSubscriptions,
@@ -53,7 +53,7 @@ export const getSubscriptionsSubscriptionId = (id: number) => {
 export const postSubscriptions = (
   name: string,
   price: number,
-  contractAt: string | null,
+  contractedAt: string | null,
   userId: number
 ) => {
   return axios.post(
@@ -61,7 +61,7 @@ export const postSubscriptions = (
     {
       name: name,
       price: price,
-      contract_at: contractAt,
+      contracted_at: contractedAt,
       user_id: userId,
     },
     {
@@ -74,7 +74,7 @@ export const putSubscriptionsSubscriptionId = async (
   id: number,
   name: string,
   price: number,
-  contractAt: string | null
+  contractedAt: string | null
 ): Promise<Subscription> => {
   const res = await axios
     .put(
@@ -82,7 +82,7 @@ export const putSubscriptionsSubscriptionId = async (
       {
         name: name,
         price: price,
-        contract_at: contractAt,
+        contracted_at: contractedAt,
       },
       { withCredentials: true }
     )
