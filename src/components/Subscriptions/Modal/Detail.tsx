@@ -9,7 +9,6 @@ import {
 } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import Axios from "axios";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { toast } from "react-toastify";

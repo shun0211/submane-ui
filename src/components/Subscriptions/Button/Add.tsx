@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Group,
+  InputWrapper,
   Modal,
   NumberInput,
   TextInput,
@@ -107,8 +108,9 @@ const Add = ({
               placeholder="1000"
               {...form.getInputProps("price")}
             />
-            <span>契約日</span>
-            <Calendar value={dateInput} onChange={setDateInput} />;
+            <InputWrapper label="契約日" className="mt-2">
+              <Calendar value={dateInput} onChange={setDateInput} fullWidth />
+            </InputWrapper>
             <Group position="right" mt="md">
               <Button type="submit">登録</Button>
             </Group>
