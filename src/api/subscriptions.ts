@@ -1,19 +1,47 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Subscription } from "../types";
+import { GetSubscriptions } from "../types/api";
 import { BadRequestError } from "../utils/custom_error";
 import { API_URL } from "./endpoint";
 
-export const getSubscriptions = (
+const getSubscriptionsApi = axios.create();
+
+getSubscriptionsApi.interceptors.response.use((response) => {
+  const camelCaseSubscriptions = response.data.subscriptions.map(
+    (subscription: any) => {
+      const camelCaseSubscription = {
+        ...subscription,
+        contractAt: subscription.contract_at,
+      };
+      return camelCaseSubscription;
+    }
+  );
+
+  const camelCasePage = {
+    page: response.data.page.page,
+    perPage: response.data.page.per_page,
+    totalCount: response.data.page.total_count,
+    totalPages: response.data.page.total_pages,
+  }
+
+  const formattedResponseData = {
+    subscriptions: camelCaseSubscriptions,
+    page: camelCasePage,
+  };
+  response.data = formattedResponseData;
+  return response;
+});
+
+export const getSubscriptions = async (
   userId: number,
   page: number,
   perPage = 10
-) => {
-  return axios.get(
+): Promise<GetSubscriptions> => {
+  const res: AxiosResponse<GetSubscriptions> = await getSubscriptionsApi.get(
     `${API_URL}/subscriptions?userId=${userId}&page=${page}&perPage=${perPage}`,
-    {
-      withCredentials: true,
-    }
+    { withCredentials: true }
   );
+  return res.data;
 };
 
 export const getSubscriptionsSubscriptionId = (id: number) => {

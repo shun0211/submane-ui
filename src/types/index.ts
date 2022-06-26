@@ -11,6 +11,15 @@ export type Subscription = {
   contractAt: string | null;
 }
 
+export type Subscriptions = Subscription[]
+
+export type Page = {
+  page: number;
+  perPage: number;
+  totalCount: number;
+  totalPages: number;
+}
+
 export type errorMessage = {
   message: string;
   forDeveloperMessage: string;

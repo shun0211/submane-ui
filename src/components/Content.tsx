@@ -5,6 +5,7 @@ import Lists from "./Subscriptions/Lists";
 import { getSubscriptions } from "../api/subscriptions";
 import { AuthContext } from "../hooks/authProvider";
 import { Subscription } from "../types";
+import { GetSubscriptions } from "../types/api";
 
 function Content() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -16,10 +17,10 @@ function Content() {
   useEffect(() => {
     const inner = async () => {
       if (currentUser) {
-        const res = await getSubscriptions(currentUser.id, activePage);
-        setSubscriptions(res.data.subscriptions);
-        setTotalPages(res.data.page.total_pages);
-        setPage(res.data.page.page);
+        const res: GetSubscriptions = await getSubscriptions(currentUser.id, activePage);
+        setSubscriptions(res.subscriptions);
+        setTotalPages(res.page.totalPages);
+        setPage(res.page.page);
       }
     };
     inner();
@@ -28,10 +29,10 @@ function Content() {
   useEffect(() => {
     const inner = async () => {
       if (currentUser) {
-        const res = await getSubscriptions(currentUser.id, activePage);
-        setSubscriptions(res.data.subscriptions);
-        setTotalPages(res.data.page.total_pages);
-        setPage(res.data.page.page);
+        const res: GetSubscriptions = await getSubscriptions(currentUser.id, activePage);
+        setSubscriptions(res.subscriptions);
+        setTotalPages(res.page.totalPages);
+        setPage(res.page.page);
         setchanged(false);
       }
     };
