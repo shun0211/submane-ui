@@ -50,24 +50,34 @@ export const getSubscriptionsSubscriptionId = (id: number) => {
   });
 };
 
-export const postSubscriptions = (
+export const postSubscriptions = async (
   name: string,
   price: number,
   contractedAt: string | null,
   userId: number
-) => {
-  return axios.post(
-    `${API_URL}/subscriptions`,
-    {
-      name: name,
-      price: price,
-      contracted_at: contractedAt,
-      user_id: userId,
-    },
-    {
-      withCredentials: true,
-    }
-  );
+): Promise<Subscription> => {
+  const res = await axios
+    .post(
+      `${API_URL}/subscriptions`,
+      {
+        name: name,
+        price: price,
+        contracted_at: contractedAt,
+        user_id: userId,
+      },
+      { withCredentials: true }
+    )
+    .catch((e) => {
+      if (
+        axios.isAxiosError(e) &&
+        e.response?.status === 400 &&
+        Array.isArray(e.response.data)
+      ) {
+        throw new BadRequestError(e.response.data);
+      }
+    });
+  const subscription: Subscription = res?.data;
+  return subscription;
 };
 
 export const putSubscriptionsSubscriptionId = async (

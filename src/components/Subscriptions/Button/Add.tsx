@@ -15,7 +15,7 @@ import { postSubscriptions } from "../../../api/subscriptions";
 import { Subscription } from "../../../types";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
-import Axios from "axios";
+import { BadRequestError } from "../../../utils/custom_error";
 
 const Add = ({
   subscriptions,
@@ -40,39 +40,33 @@ const Add = ({
     price: number,
     contractedAt: string | null
   ) => {
-    try {
-      const res = await postSubscriptions(
-        name,
-        price,
-        contractedAt,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        currentUser!.id
-      );
-      const subscription: Subscription = res.data;
-      const newSubscriptions = [
-        ...subscriptions,
-        {
-          id: subscription.id,
-          name: subscription.name,
-          price: subscription.price,
-          contractedAt: subscription.contractedAt,
-        },
-      ];
-      setSubscriptions(newSubscriptions);
-      setOpened(false);
-      form.reset();
-      toast.success("作成しました！", {
-        autoClose: 3000,
-      });
-    } catch (e) {
-      if (
-        Axios.isAxiosError(e) &&
-        e.response?.status === 400 &&
-        Array.isArray(e.response.data)
-      ) {
-        e.response.data.map((message: string) => toast.error(message));
+    const createdSubscription = await postSubscriptions(
+      name,
+      price,
+      contractedAt,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      currentUser!.id
+    ).catch((e) => {
+      if (e instanceof BadRequestError) {
+        e.errorMessages.map((message: string) => toast.error(message));
       }
-    }
+      throw e;
+    });
+    const newSubscriptions = [
+      ...subscriptions,
+      {
+        id: createdSubscription.id,
+        name: createdSubscription.name,
+        price: createdSubscription.price,
+        contractedAt: createdSubscription.contractedAt,
+      },
+    ];
+    setSubscriptions(newSubscriptions);
+    setOpened(false);
+    form.reset();
+    toast.success("作成しました！", {
+      autoClose: 3000,
+    });
   };
 
   const formatDateInput = (dateInput: Date): string => {
